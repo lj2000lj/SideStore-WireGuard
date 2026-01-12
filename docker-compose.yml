@@ -1,0 +1,17 @@
+services:
+  sidestore-wireguard:
+    image: ghcr.io/lj2000lj/sidestore-wireguard:latest
+    container_name: sidestore-wireguard
+    env_file:
+      - .env
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    sysctls:
+      net.ipv4.conf.all.src_valid_mark: 1
+    ports:
+      - "${WG_PORT:-51820}:${WG_PORT:-51820}/udp"
+    volumes:
+      - ./config:/config
+      - .:/work
+    restart: unless-stopped
